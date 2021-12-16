@@ -32,9 +32,9 @@ def main():
     prog_two = ProgramChangeMessage(channel=1, program_number=1)
 
     while True:
-        interface.send(prog_one.message)
+        interface.send(prog_one)
         sleep(5)
-        interface.send(prog_two.message)
+        interface.send(prog_two)
         sleep(5)
 
 

@@ -23,6 +23,7 @@ SOFTWARE.
 """
 
 from machine import UART
+from Midi.Status import StatusMessage
 
 class MidiInterface:
     """
@@ -32,7 +33,7 @@ class MidiInterface:
     def __init__(self, uart: UART = UART(id=0, baudrate=31250, bits=8, stop=1)) -> None:
         self.uart = uart
 
-    def send(self, msg: bytes) -> int:
-        bytes_written =  self.uart.write(msg)
+    def send(self, sm: StatusMessage) -> int:
+        bytes_written =  self.uart.write(sm.message)
 
         return bytes_written if bytes_written is not None else 0
