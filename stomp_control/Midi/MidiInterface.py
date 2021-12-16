@@ -34,6 +34,6 @@ class MidiInterface:
         self.uart = uart
 
     def send(self, sm: StatusMessage) -> int:
-        bytes_written =  self.uart.write(sm.message)
+        bytes_written =  self.uart.write(sm.serialized)
 
         return bytes_written if bytes_written is not None else 0

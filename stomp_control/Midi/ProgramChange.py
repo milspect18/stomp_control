@@ -35,7 +35,7 @@ class ProgramChangeMessage(StatusMessage):
         self.program_number = program_number
 
     @property
-    def message(self) -> bytes:
+    def serialized(self) -> bytes:
         if self.channel is None or self.program_number is None:
             return bytes()
 

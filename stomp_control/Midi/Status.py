@@ -35,6 +35,6 @@ class StatusMessage:
     SYSTEM = 0xF
 
     @property
-    def message(self) -> bytes:
+    def serialized(self) -> bytes:
         return bytes()
 
