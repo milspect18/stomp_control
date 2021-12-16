@@ -1,0 +1,6 @@
+# ignore vs code workspace stuff
+.vscode/
+pico-go.json
+
+# python build artifacts
+__pycache__/
