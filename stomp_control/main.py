@@ -22,20 +22,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-from time import sleep
 from Midi.ProgramChange import ProgramChangeMessage
 from Midi.MidiInterface import MidiInterface
+from Button.PushButton import PushButton
 
 def main():
     interface = MidiInterface()
-    prog_one = ProgramChangeMessage(channel=1, program_number=0)
-    prog_two = ProgramChangeMessage(channel=1, program_number=1)
+    prog_changes = [
+        ProgramChangeMessage(channel=1, program_number=0),
+        ProgramChangeMessage(channel=1, program_number=1)
+    ]
+    btn_one = PushButton(1, active=PushButton.ACTIVE_HIGH)
+    idx = 0
 
     while True:
-        interface.send(prog_one)
-        sleep(5)
-        interface.send(prog_two)
-        sleep(5)
+        if btn_one.did_release:
+            interface.send(prog_changes[idx])
+
+            idx += 1
+
+            if idx >= len(prog_changes):
+                idx = 0
+
 
 
 
