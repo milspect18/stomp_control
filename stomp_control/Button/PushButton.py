@@ -23,7 +23,7 @@ SOFTWARE.
 """
 
 import sys
-from machine import Pin
+from machine import Pin, disable_irq, enable_irq
 
 if sys.platform == "rp2":
     IO_NUMS = [io_num for io_num in range(29) if io_num not in [23, 24, 25]]
@@ -67,27 +67,38 @@ class PushButton:
 
     @property
     def state(self) -> int:
-        return self.PRESSED if self._is_pressed else self.RELEASED
+        state = disable_irq()
+        val = self.PRESSED if self._is_pressed else self.RELEASED
+        enable_irq(state)
+        return val
 
     @property
     def did_press(self) -> bool:
+        state = disable_irq()
         _did_press = self._press_count > 0
         self._press_count = max(0, self._press_count - 1)
+        enable_irq(state)
 
         return _did_press
 
     @property
     def did_release(self) -> bool:
+        state = disable_irq()
         _did_release = self._release_count > 0
         self._release_count = max(0, self._release_count - 1)
+        enable_irq(state)
 
         return _did_release
 
     def clear_press_events(self):
+        state = disable_irq()
         self._press_count = 0
+        enable_irq(state)
 
     def clear_release_events(self):
+        state = disable_irq()
         self._release_count = 0
+        enable_irq(state)
 
     def clear_all_events(self):
         self.clear_press_events()
