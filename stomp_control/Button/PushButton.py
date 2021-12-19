@@ -41,10 +41,9 @@ class PushButton:
     RELEASED = 0
     PRESSED = 1
 
-    _MAX_PRESS_RELEASE_COUNT = 100
-
-    def __init__(self, input_num: int, active: int = ACTIVE_HIGH) -> None:
+    def __init__(self, input_num: int, active: int = ACTIVE_HIGH, max_event: int = 100) -> None:
         self.pin_num = input_num
+        self.max_event_count = abs(max_event)
         self._active = active
         self._press_count = 0
         self._release_count = 0
@@ -107,9 +106,9 @@ class PushButton:
     def _edge_detect(self, pin: Pin) -> None:
         self._is_pressed = self._active == pin.value()
 
-        if self._is_pressed:
-            self._press_count = min(self._MAX_PRESS_RELEASE_COUNT, self._press_count + 1)
-        else:
-            self._release_count = min(self._MAX_PRESS_RELEASE_COUNT, self._release_count + 1)
+        if self._is_pressed and self._press_count < self.max_event_count:
+            self._press_count += 1
+        elif not self._is_pressed and self._release_count < self.max_event_count:
+            self._release_count += 1
 
 
